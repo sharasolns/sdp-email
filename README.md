@@ -36,39 +36,15 @@ custom headers, and file attachments are supported.
 
 ## Configuration
 
-Like Laravel's Mailgun integration, the mailer belongs in `config/mail.php`
-and its credentials belong in `config/services.php`. Package discovery adds
-both defaults automatically, so most applications only need these environment
-variables:
+Package discovery registers the mail transport and its service configuration
+automatically. Set the mailer and API key in your environment:
 
 ```dotenv
-SDP_EMAIL_KEY=
-SDP_EMAIL_ENDPOINT=https://email.sdp-platform.com
-SDP_EMAIL_TIMEOUT=10
+MAIL_MAILER=sdp
+SDP_EMAIL_KEY=sdp_your_api_key
 ```
 
-If you keep explicit configuration in your application, use:
-
-```php
-// config/services.php
-'sdp' => [
-    'key' => env('SDP_EMAIL_KEY'),
-    'endpoint' => env('SDP_EMAIL_ENDPOINT', 'https://email.sdp-platform.com'),
-    'timeout' => (float) env('SDP_EMAIL_TIMEOUT', 10),
-],
-```
-
-```php
-// config/mail.php
-'mailers' => [
-    'sdp' => [
-        'transport' => 'sdp',
-    ],
-],
-```
-
-Mailer-level `key`, `endpoint`, and `timeout` values remain supported when
-separate credentials are needed for a specific mailer.
+`SDP_EMAIL_ENDPOINT` and `SDP_EMAIL_TIMEOUT` are optional.
 
 ## Development
 
