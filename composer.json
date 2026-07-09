@@ -1,6 +1,6 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "iankibet/laravel-sdp-email",
+    "name": "sharasolns/sdp-email",
     "description": "An SDP Email API transport for Laravel Mail.",
     "type": "library",
     "license": "MIT",

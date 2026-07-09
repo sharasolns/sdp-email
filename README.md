@@ -6,7 +6,7 @@ Send Laravel mailables through the SDP Email HTTP API. The package adds an
 ## Install
 
 ```bash
-composer require iankibet/laravel-sdp-email
+composer require sharasolns/sdp-email
 ```
 
 Configure the application:
