@@ -58,5 +58,7 @@ class SdpTransportTest extends TestCase
     public function test_service_provider_registers_the_sdp_mailer(): void
     {
         $this->assertSame(['transport' => 'sdp'], config('mail.mailers.sdp'));
+        $this->assertSame('https://email.sdp-platform.com', config('services.sdp.endpoint'));
+        $this->assertSame(10.0, config('services.sdp.timeout'));
     }
 }

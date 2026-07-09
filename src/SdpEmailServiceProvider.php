@@ -11,7 +11,7 @@ class SdpEmailServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/sdp-email.php', 'sdp-email');
+        $this->mergeConfigFrom(__DIR__.'/../config/services.php', 'services');
 
         if ($this->app->make('config')->get('mail.mailers.sdp') === null) {
             $this->app->make('config')->set('mail.mailers.sdp', [
@@ -22,23 +22,26 @@ class SdpEmailServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->publishes([
-            __DIR__.'/../config/sdp-email.php' => config_path('sdp-email.php'),
-        ], 'sdp-email-config');
-
         Mail::extend('sdp', function (array $config = []): SdpTransport {
-            $apiKey = (string) ($config['api_key'] ?? config('sdp-email.api_key', ''));
+            $apiKey = (string) (
+                $config['key']
+                ?? $config['api_key']
+                ?? config('services.sdp.key', '')
+            );
 
             if ($apiKey === '') {
                 throw new InvalidArgumentException(
-                    'The SDP Email API key is missing. Set SDP_EMAIL_API_KEY in your environment.',
+                    'The SDP Email API key is missing. Set SDP_EMAIL_KEY in your environment.',
                 );
             }
 
             return new SdpTransport(
                 apiKey: $apiKey,
-                endpoint: (string) ($config['endpoint'] ?? config('sdp-email.endpoint')),
-                timeout: (float) ($config['timeout'] ?? config('sdp-email.timeout', 10)),
+                endpoint: (string) (
+                    $config['endpoint']
+                    ?? config('services.sdp.endpoint', 'https://email.sdp-platform.com')
+                ),
+                timeout: (float) ($config['timeout'] ?? config('services.sdp.timeout', 10)),
             );
         });
     }

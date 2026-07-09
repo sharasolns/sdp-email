@@ -13,7 +13,7 @@ Configure the application:
 
 ```dotenv
 MAIL_MAILER=sdp
-SDP_EMAIL_API_KEY=sdp_your_api_key
+SDP_EMAIL_KEY=sdp_your_api_key
 MAIL_FROM_ADDRESS=hello@example.com
 MAIL_FROM_NAME="${APP_NAME}"
 ```
@@ -36,33 +36,39 @@ custom headers, and file attachments are supported.
 
 ## Configuration
 
-The production API endpoint is configured automatically. To publish the
-optional configuration file:
-
-```bash
-php artisan vendor:publish --tag=sdp-email-config
-```
-
-Available environment variables:
+Like Laravel's Mailgun integration, the mailer belongs in `config/mail.php`
+and its credentials belong in `config/services.php`. Package discovery adds
+both defaults automatically, so most applications only need these environment
+variables:
 
 ```dotenv
-SDP_EMAIL_API_KEY=
+SDP_EMAIL_KEY=
 SDP_EMAIL_ENDPOINT=https://email.sdp-platform.com
 SDP_EMAIL_TIMEOUT=10
 ```
 
-Each mailer may override package settings in `config/mail.php`:
+If you keep explicit configuration in your application, use:
 
 ```php
+// config/services.php
+'sdp' => [
+    'key' => env('SDP_EMAIL_KEY'),
+    'endpoint' => env('SDP_EMAIL_ENDPOINT', 'https://email.sdp-platform.com'),
+    'timeout' => (float) env('SDP_EMAIL_TIMEOUT', 10),
+],
+```
+
+```php
+// config/mail.php
 'mailers' => [
     'sdp' => [
         'transport' => 'sdp',
-        'api_key' => env('SDP_EMAIL_API_KEY'),
-        'endpoint' => env('SDP_EMAIL_ENDPOINT', 'https://email.sdp-platform.com'),
-        'timeout' => 10,
     ],
 ],
 ```
+
+Mailer-level `key`, `endpoint`, and `timeout` values remain supported when
+separate credentials are needed for a specific mailer.
 
 ## Development
 
