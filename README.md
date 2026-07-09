@@ -14,6 +14,11 @@ Configure the application:
 ```dotenv
 MAIL_MAILER=sdp
 SDP_EMAIL_KEY=sdp_your_api_key
+```
+
+Set Laravel's sender address separately:
+
+```dotenv
 MAIL_FROM_ADDRESS=hello@example.com
 MAIL_FROM_NAME="${APP_NAME}"
 ```
